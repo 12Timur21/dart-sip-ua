@@ -62,6 +62,8 @@ class SIPUAHelper extends EventManager {
   void stop() async {
     if (_ua != null) {
       _ua!.stop();
+      _ua?.terminateSessions(null);
+      _ua = null;
     } else {
       logger.w('ERROR: stop called but not started, call start first.');
     }
@@ -82,11 +84,15 @@ class SIPUAHelper extends EventManager {
     }
   }
 
-  Future<bool> call(String target,
-      {bool voiceonly = false,
-      MediaStream? mediaStream,
-      List<String>? headers,
-      Map<String, dynamic>? customOptions}) async {
+  Future<bool> call(
+    String target,
+    String uuid,
+    int phoneId, {
+    bool voiceonly = false,
+    MediaStream? mediaStream,
+    List<String>? headers,
+    Map<String, dynamic>? customOptions,
+  }) async {
     if (_ua != null && _ua!.isConnected()) {
       Map<String, dynamic> options = buildCallOptions(voiceonly);
       if (customOptions != null) {
@@ -97,7 +103,12 @@ class SIPUAHelper extends EventManager {
       }
       List<dynamic> extHeaders = options['extraHeaders'] as List<dynamic>;
       extHeaders.addAll(headers ?? <String>[]);
-      _ua!.call(target, options);
+      _ua!.call(
+        target,
+        uuid,
+        phoneId,
+        options,
+      );
       return true;
     } else {
       logger.e('Not connected, you will need to register.',

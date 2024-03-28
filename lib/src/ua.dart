@@ -244,10 +244,20 @@ class UA extends EventManager {
    * -throws {TypeError}
    *
    */
-  RTCSession call(String target, Map<String, dynamic> options) {
+  RTCSession call(
+    String target,
+    String uuid,
+    int phoneId,
+    Map<String, dynamic> options,
+  ) {
     logger.d('call()');
     RTCSession session = RTCSession(this);
-    session.connect(target, options);
+    session.connect(
+      target,
+      uuid,
+      phoneId,
+      options,
+    );
     return session;
   }
 
