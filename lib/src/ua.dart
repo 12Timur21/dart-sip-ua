@@ -300,7 +300,7 @@ class UA extends EventManager {
   /**
    * Terminate ongoing sessions.
    */
-  void terminateSessions(Map<String, dynamic> options) {
+  void terminateSessions(Map<String, dynamic>? options) {
     logger.d('terminateSessions()');
     _sessions.forEach((String? key, _) {
       if (!_sessions[key]!.isEnded()) {
